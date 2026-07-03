@@ -27,7 +27,7 @@ export default class ProdutoService {
       categoria: produto.categoria,
       classe: produto.classe,
       preco: produto.preco,
-      imagem_emoji: produto.imagem_emoji,
+      imagem_url: produto.imagem_url,
     };
   }
 }

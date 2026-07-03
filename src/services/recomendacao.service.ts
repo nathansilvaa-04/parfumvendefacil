@@ -40,7 +40,7 @@ export default class RecomendacaoService {
         categoria: p!.categoria,
         classe: p!.classe,
         preco: p!.preco,
-        imagem_emoji: p!.imagem_emoji,
+        imagem_url: p!.imagem_url,
       }));
   }
 }

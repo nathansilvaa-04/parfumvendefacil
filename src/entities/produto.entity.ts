@@ -5,5 +5,5 @@ export default class Produto extends BaseEntity {
   categoria!: string;
   classe!: string;
   preco!: number;
-  imagem_emoji!: string;
+  imagem_url!: string;
 }

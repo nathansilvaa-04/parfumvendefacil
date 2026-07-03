@@ -3,7 +3,7 @@ export interface CreateProdutoDTO {
   categoria: string;
   classe: string;
   preco: number;
-  imagem_emoji: string;
+  imagem_url: string;
 }
 
 export interface ResponseProdutoDTO {
@@ -12,7 +12,7 @@ export interface ResponseProdutoDTO {
   categoria: string;
   classe: string;
   preco: number;
-  imagem_emoji: string;
+  imagem_url: string;
 }
 
 export default class ProdutoDTO {}

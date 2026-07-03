@@ -2,14 +2,14 @@ import Produto from "../entities/produto.entity";
 
 export default class ProdutoRepository {
   private produtos: Produto[] = [
-    { id: 1, nome: "Lavender Dream", categoria: "Amadeirado", classe: "Eau de Parfum", preco: 89.9, imagem_emoji: "🪻" },
-    { id: 2, nome: "Rose Éclat", categoria: "Floral", classe: "Parfum", preco: 129.9, imagem_emoji: "🌹" },
-    { id: 3, nome: "Citrus Splash", categoria: "Cítrico", classe: "Eau de Toilette", preco: 69.9, imagem_emoji: "🍊" },
-    { id: 4, nome: "Herbal Mist", categoria: "Herbáceo", classe: "Eau de Cologne", preco: 79.9, imagem_emoji: "🌿" },
-    { id: 5, nome: "Vanilla Noir", categoria: "Gourmand", classe: "Eau de Parfum", preco: 99.9, imagem_emoji: "🍫" },
-    { id: 6, nome: "Ocean Breeze", categoria: "Aquático", classe: "Eau de Toilette", preco: 109.9, imagem_emoji: "🌊" },
-    { id: 7, nome: "Spice Fire", categoria: "Oriental", classe: "Parfum", preco: 119.9, imagem_emoji: "🔥" },
-    { id: 8, nome: "Cherry Bloom", categoria: "Frutal", classe: "Eau de Toilette", preco: 74.9, imagem_emoji: "🌸" },
+    { id: 1, nome: "Lavender Dream", categoria: "Amadeirado", classe: "Eau de Parfum", preco: 89.9, imagem_url: "/perfumes/lavender-dream.png" },
+    { id: 2, nome: "Rose Éclat", categoria: "Floral", classe: "Parfum", preco: 129.9, imagem_url: "/perfumes/rose-eclat.png" },
+    { id: 3, nome: "Citrus Splash", categoria: "Cítrico", classe: "Eau de Toilette", preco: 69.9, imagem_url: "/perfumes/citrus-splash.png" },
+    { id: 4, nome: "Herbal Mist", categoria: "Herbáceo", classe: "Eau de Cologne", preco: 79.9, imagem_url: "/perfumes/herbal-mist.png" },
+    { id: 5, nome: "Vanilla Noir", categoria: "Gourmand", classe: "Eau de Parfum", preco: 99.9, imagem_url: "/perfumes/vanilla-noir.png" },
+    { id: 6, nome: "Ocean Breeze", categoria: "Aquático", classe: "Eau de Toilette", preco: 109.9, imagem_url: "/perfumes/ocean-breeze.png" },
+    { id: 7, nome: "Spice Fire", categoria: "Oriental", classe: "Parfum", preco: 119.9, imagem_url: "/perfumes/spice-fire.png" },
+    { id: 8, nome: "Cherry Bloom", categoria: "Frutal", classe: "Eau de Toilette", preco: 74.9, imagem_url: "/perfumes/cherry-bloom.png" },
   ];
 
   async findAll(nome?: string, classe?: string): Promise<Produto[]> {
