@@ -3,8 +3,8 @@ import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 
 export const metadata: Metadata = {
-  title: "VendeFácil - Perfumes",
-  description: "Sua loja de perfumes online",
+  title: "ELEGANZA - Perfumes",
+  description: "Perfumaria de luxo",
 };
 
 export default function RootLayout({

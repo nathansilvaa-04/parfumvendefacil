@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
-import type { Produto } from "./produtos";
+import type { ResponseProdutoDTO as Produto } from "../src/dtos/produto.dto";
 
 interface CartItem {
   produto: Produto;

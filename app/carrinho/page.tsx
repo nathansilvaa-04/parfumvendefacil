@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
-import { recomendar } from "@/lib/recomendacao";
+import { getRecomendacoes } from "@/app/actions";
+import { ResponseRecomendacaoDTO } from "@/src/dtos/recomendacao.dto";
 
 export default function Carrinho() {
   const { items, adicionar, remover, atualizarQuantidade, limpar, total, totalItens } =
@@ -15,15 +16,23 @@ export default function Carrinho() {
       ? items.reduce((a, b) => (a.produto.preco > b.produto.preco ? a : b))
       : null;
 
-  const recomendacoes = maisCaro ? recomendar(maisCaro.produto.id, 3) : [];
+  const [recomendacoes, setRecomendacoes] = useState<ResponseRecomendacaoDTO>([]);
+
+  useEffect(() => {
+    if (maisCaro) {
+      getRecomendacoes(maisCaro.produto.id, 3).then(setRecomendacoes).catch(() => setRecomendacoes([]));
+    } else {
+      setRecomendacoes([]);
+    }
+  }, [maisCaro?.produto.id]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <header className="bg-indigo-600 text-white py-4 px-6 shadow-md">
+      <header className="bg-black text-gold-400 py-4 px-6 shadow-md">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-2xl font-bold hover:text-yellow-400 transition-colors">
+          <Link href="/" className="flex items-center gap-2 text-2xl font-bold tracking-widest hover:text-gold-200 transition-colors">
             <span>🧴</span>
-            <span>VendeFácil</span>
+            <span>ELEGANZA</span>
           </Link>
           <div className="flex items-center gap-1 text-lg">
             <span>🛒</span>
@@ -45,7 +54,7 @@ export default function Carrinho() {
             <p className="text-xl text-gray-500 mb-6">Seu carrinho está vazio</p>
             <Link
               href="/"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+              className="bg-black hover:bg-gray-800 text-gold-400 font-semibold py-3 px-6 rounded-lg transition-colors"
             >
               Ver produtos
             </Link>
@@ -63,10 +72,10 @@ export default function Carrinho() {
                     <h2 className="text-lg font-semibold text-gray-800">
                       {item.produto.nome}
                     </h2>
-                    <span className="text-sm text-indigo-600 font-medium">
+                    <span className="text-sm text-gold-500 font-medium">
                       {item.produto.categoria}
                     </span>
-                    <div className="text-base font-bold text-yellow-400 mt-1">
+                    <div className="text-base font-bold text-gold-400 mt-1">
                       R$ {item.produto.preco.toFixed(2).replace(".", ",")}
                     </div>
                   </div>
@@ -112,7 +121,7 @@ export default function Carrinho() {
             <div className="mt-8 border-t border-gray-200 pt-6">
               <div className="flex justify-between items-center text-xl font-bold text-gray-800 mb-6">
                 <span>Total:</span>
-                <span className="text-yellow-400">
+                <span className="text-gold-400">
                   R$ {total.toFixed(2).replace(".", ",")}
                 </span>
               </div>
@@ -153,7 +162,7 @@ export default function Carrinho() {
                     }
                   }}
                   disabled={finalizando}
-                  className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                  className="flex-1 bg-gold-400 hover:bg-gold-500 disabled:bg-gold-200 text-black font-semibold py-3 px-6 rounded-lg transition-colors"
                 >
                   {finalizando ? "Gerando checkout..." : "Finalizar compra"}
                 </button>
@@ -178,13 +187,13 @@ export default function Carrinho() {
                     <p className="font-semibold text-gray-800 text-sm truncate">
                       {produto.nome}
                     </p>
-                    <p className="text-yellow-400 font-bold text-sm">
+                    <p className="text-gold-400 font-bold text-sm">
                       R$ {produto.preco.toFixed(2).replace(".", ",")}
                     </p>
                   </div>
                   <button
                     onClick={() => adicionar(produto)}
-                    className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold text-xs py-2 px-3 rounded-lg transition-colors whitespace-nowrap"
+                    className="bg-gold-400 hover:bg-gold-500 text-black font-semibold text-xs py-2 px-3 rounded-lg transition-colors whitespace-nowrap"
                   >
                     + Adicionar
                   </button>
@@ -195,7 +204,7 @@ export default function Carrinho() {
         )}
       </main>
 
-      <footer className="bg-indigo-600 text-white py-4 px-6 text-center text-sm">
+      <footer className="bg-black text-gold-400 py-4 px-6 text-center text-sm">
         Feito com ❤ na aula de IA do SENAI
       </footer>
     </div>

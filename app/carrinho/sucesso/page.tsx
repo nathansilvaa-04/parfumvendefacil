@@ -3,10 +3,10 @@ import Link from "next/link";
 export default function Sucesso() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <header className="bg-indigo-600 text-white py-4 px-6 shadow-md">
-        <div className="max-w-6xl mx-auto flex items-center gap-2 text-2xl font-bold">
+      <header className="bg-black text-gold-400 py-4 px-6 shadow-md">
+        <div className="max-w-6xl mx-auto flex items-center gap-2 text-2xl font-bold tracking-widest">
           <span>🧴</span>
-          <span>VendeFácil</span>
+          <span>ELEGANZA</span>
         </div>
       </header>
 
@@ -20,13 +20,13 @@ export default function Sucesso() {
         </p>
         <Link
           href="/"
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+          className="bg-gold-400 hover:bg-gold-500 text-black font-semibold py-3 px-6 rounded-lg transition-colors"
         >
           Voltar às compras
         </Link>
       </main>
 
-      <footer className="bg-indigo-600 text-white py-4 px-6 text-center text-sm">
+      <footer className="bg-black text-gold-400 py-4 px-6 text-center text-sm">
         Feito com ❤ na aula de IA do SENAI
       </footer>
     </div>
