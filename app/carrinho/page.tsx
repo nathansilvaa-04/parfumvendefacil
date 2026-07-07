@@ -67,7 +67,7 @@ export default function Carrinho() {
                   key={item.produto.id}
                   className="border border-gray-200 rounded-xl p-4 flex items-center gap-4"
                 >
-                  <span className="text-4xl">{item.produto.imagem_emoji}</span>
+
                   <div className="flex-1">
                     <h2 className="text-lg font-semibold text-gray-800">
                       {item.produto.nome}
@@ -182,7 +182,7 @@ export default function Carrinho() {
                   key={produto.id}
                   className="border border-gray-200 rounded-xl p-4 flex items-center gap-3 hover:shadow-md transition-shadow"
                 >
-                  <span className="text-4xl">{produto.imagem_emoji}</span>
+
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-800 text-sm truncate">
                       {produto.nome}

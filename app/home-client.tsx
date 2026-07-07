@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
@@ -12,21 +12,55 @@ interface HomeClientProps {
   recomendacoesMap: Record<number, ResponseRecomendacaoDTO>;
 }
 
+type Ordenacao = "padrao" | "maior-preco" | "menor-preco" | "az" | "za";
+
 export default function HomeClient({ produtos, recomendacoesMap }: HomeClientProps) {
   const { adicionar, totalItens } = useCart();
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [busca, setBusca] = useState(searchParams.get("busca") || "");
+  const [busca, setBusca] = useState("");
   const [classe, setClasse] = useState(searchParams.get("classe") || "Todas");
+  const [ordenacao, setOrdenacao] = useState<Ordenacao>("padrao");
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleClasseChange = (novaClasse: string) => {
+    setClasse(novaClasse);
     const params = new URLSearchParams();
-    if (busca) params.set("busca", busca);
-    if (classe && classe !== "Todas") params.set("classe", classe);
+    if (novaClasse && novaClasse !== "Todas") params.set("classe", novaClasse);
     router.push(`/?${params.toString()}`);
   };
+
+  const produtosOrdenados = useMemo(() => {
+    let lista = [...produtos];
+
+    // Filtro por nome ou categoria (frontend, em tempo real)
+    if (busca.trim()) {
+      const termo = busca.toLowerCase();
+      lista = lista.filter(
+        (p) =>
+          p.nome.toLowerCase().includes(termo) ||
+          p.categoria.toLowerCase().includes(termo)
+      );
+    }
+
+    // Ordenação
+    switch (ordenacao) {
+      case "maior-preco":
+        lista.sort((a, b) => b.preco - a.preco);
+        break;
+      case "menor-preco":
+        lista.sort((a, b) => a.preco - b.preco);
+        break;
+      case "az":
+        lista.sort((a, b) => a.nome.localeCompare(b.nome));
+        break;
+      case "za":
+        lista.sort((a, b) => b.nome.localeCompare(a.nome));
+        break;
+    }
+
+    return lista;
+  }, [produtos, busca, ordenacao]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -55,7 +89,7 @@ export default function HomeClient({ produtos, recomendacoesMap }: HomeClientPro
           Nossos Perfumes
         </h1>
 
-        <form onSubmit={handleSearch} className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-center bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-center bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
           <input
             type="text"
             placeholder="Buscar por nome..."
@@ -63,9 +97,11 @@ export default function HomeClient({ produtos, recomendacoesMap }: HomeClientPro
             onChange={(e) => setBusca(e.target.value)}
             className="flex-1 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold-400"
           />
+
+          {/* Filtro por classe — busca automática */}
           <select
             value={classe}
-            onChange={(e) => setClasse(e.target.value)}
+            onChange={(e) => handleClasseChange(e.target.value)}
             className="w-full md:w-auto px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white"
           >
             <option value="Todas">Todas as Classes</option>
@@ -74,20 +110,30 @@ export default function HomeClient({ produtos, recomendacoesMap }: HomeClientPro
             <option value="Eau de Toilette">Eau de Toilette</option>
             <option value="Eau de Cologne">Eau de Cologne</option>
           </select>
-          <button type="submit" className="w-full md:w-auto bg-black hover:bg-gray-800 text-gold-400 font-semibold py-3 px-8 rounded-lg transition-colors">
-            Filtrar
-          </button>
-        </form>
+
+          {/* Ordenação — instantânea via estado local */}
+          <select
+            value={ordenacao}
+            onChange={(e) => setOrdenacao(e.target.value as Ordenacao)}
+            className="w-full md:w-auto px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white"
+          >
+            <option value="padrao">Ordenar por...</option>
+            <option value="maior-preco">💰 Maior Preço</option>
+            <option value="menor-preco">🏷️ Menor Preço</option>
+            <option value="az">🔤 Nome A → Z</option>
+            <option value="za">🔤 Nome Z → A</option>
+          </select>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {produtos.map((produto) => {
+          {produtosOrdenados.map((produto) => {
             const relacionados = recomendacoesMap[produto.id] || [];
             return (
               <div
                 key={produto.id}
                 className="group border border-gold-200 rounded-xl p-6 flex flex-col items-center text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
-                <span className="text-6xl mb-4">{produto.imagem_emoji}</span>
+
                 <h2 className="text-lg font-semibold text-gray-800">
                   {produto.nome}
                 </h2>
@@ -115,7 +161,7 @@ export default function HomeClient({ produtos, recomendacoesMap }: HomeClientPro
                   <div className="flex flex-col gap-2">
                     {relacionados.map((rec) => (
                       <div key={rec.id} className="flex items-center gap-2 text-sm">
-                        <span>{rec.imagem_emoji}</span>
+
                         <span className="text-gray-700 truncate">{rec.nome}</span>
                         <span className="text-gold-400 font-bold ml-auto text-xs">
                           R$ {rec.preco.toFixed(2).replace(".", ",")}
